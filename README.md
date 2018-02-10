@@ -6,7 +6,7 @@ Implementation of CVPR2017 Paper: "Deep Laplacian Pyramid Networks for Fast and 
 #### Training
 
 ```bash
-N$ python train.py -h
+$ python train.py -h
 usage: train.py [-h] [--dataset DATASET] [--outdirname OUTDIRNAME]
                 [--scale SCALE] [--batchsize BATCHSIZE] [--epoch EPOCH]
                 [--step_per_epoch STEP_PER_EPOCH] [--model MODEL] [--gpu GPU]
