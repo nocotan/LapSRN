@@ -35,12 +35,12 @@ def PSNR(pred, gt, shave_border=0):
 
 def main():
     parser = argparse.ArgumentParser(description="LapSRN")
-    parser.add_argument("--dataset", type=str, default="data/p2.png")
+    parser.add_argument("--dataset", type=str, default="\"data/*\"")
     parser.add_argument("--outdirname", type=str, default="./models")
     parser.add_argument("--scale", type=int, default=4)
     parser.add_argument("--batchsize", type=int, default=64)
     parser.add_argument("--epoch", type=int, default=100)
-    parser.add_argument("--step_per_epoch", type=int, default=128)
+    parser.add_argument("--steps_per_epoch", type=int, default=128)
     parser.add_argument("--model", default=None)
     parser.add_argument("--gpu", type=int, default=-1)
     args = parser.parse_args()
@@ -51,7 +51,7 @@ def main():
     print('# scale: {}'.format(args.scale))
     print('# batchsize: {}'.format(args.batchsize))
     print('# epoch: {}'.format(args.epoch))
-    print('# step_per_epoch: {}'.format(args.step_per_epoch))
+    print('# steps_per_epoch: {}'.format(args.steps_per_epoch))
     print('# model: {}'.format(args.model))
     print('')
 
@@ -88,24 +88,27 @@ def main():
 
     step = 0
     epoch = 0
+    loss = 0
     print("training...")
     for zipped_batch in iterator:
         lr = chainer.Variable(xp.array([zipped[0] for zipped in zipped_batch]))
         hr = chainer.Variable(xp.array([zipped[1] for zipped in zipped_batch]))
 
         sr = model(lr)
-        loss = l1_charbonnier(sr, hr, model)
+        loss += l1_charbonnier(sr, hr, model).data
         optimizer.update(l1_charbonnier, sr, hr, model)
 
-        if step % args.step_per_epoch == 0:
+        if step % args.steps_per_epoch == 0:
+            loss /= args.steps_per_epoch
             print("Epoch: {}, Loss: {}, PSNR: {}".format(epoch,
-                                                         loss.data,
+                                                         loss,
                                                          PSNR(sr.data[0],
                                                               hr.data[0])))
             chainer.serializers.save_npz(
                 os.path.join(OUTPUT_DIRECTORY, "model_{}.npz".format(epoch)),
                 model)
             epoch += 1
+            loss = 0
         step += 1
 
         if epoch > args.epoch:
