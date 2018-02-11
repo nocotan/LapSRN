@@ -35,7 +35,7 @@ def PSNR(pred, gt, shave_border=0):
 
 def main():
     parser = argparse.ArgumentParser(description="LapSRN")
-    parser.add_argument("--dataset", type=str, default="\"data/*\"")
+    parser.add_argument("--dataset", type=str)
     parser.add_argument("--outdirname", type=str, default="./models")
     parser.add_argument("--scale", type=int, default=4)
     parser.add_argument("--batchsize", type=int, default=64)
