@@ -9,7 +9,7 @@ Implementation of CVPR2017 Paper: "Deep Laplacian Pyramid Networks for Fast and 
 $ python train.py -h
 usage: train.py [-h] [--dataset DATASET] [--outdirname OUTDIRNAME]
                 [--scale SCALE] [--batchsize BATCHSIZE] [--epoch EPOCH]
-                [--step_per_epoch STEP_PER_EPOCH] [--model MODEL] [--gpu GPU]
+                [--steps_per_epoch STEPS_PER_EPOCH] [--model MODEL] [--gpu GPU]
 
 LapSRN
 
@@ -20,7 +20,7 @@ optional arguments:
   --scale SCALE
   --batchsize BATCHSIZE
   --epoch EPOCH
-  --step_per_epoch STEP_PER_EPOCH
+  --steps_per_epoch STEPS_PER_EPOCH
   --model MODEL
   --gpu GPU
 ```
